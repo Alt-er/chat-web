@@ -1,5 +1,8 @@
+import NavbarLayout from "@/layouts/NavbarLayout";
 import BlankLayout from "@/layouts/BlankLayout";
+import Chat from "@/pages/Chat";
 import Home from "@/pages/Home";
+import Note from "@/pages/Note";
 import TsTest from "@/pages/TsTest";
 import React from "react";
 import { Navigate } from "react-router-dom";
@@ -30,7 +33,7 @@ import { Navigate } from "react-router-dom";
 // const ShareWarpper = React.lazy(() => import("@/pages/ShareWarpper"));
 // const BlankLayout = React.lazy(() => import("@/layouts/BlankLayout"));
 const NoFoundPage = React.lazy(() => import("@/pages/404"));
-
+const Login = React.lazy(() => import("@/pages/Login"));
 // 平级路由 只需要 path 和 element
 
 // 嵌套路由 需要多一个children属性 , 并且父组件中必须渲染  <Outlet /> ,此时父节点的element相当于子节点的容器，可以实现布局
@@ -43,13 +46,29 @@ const NoFoundPage = React.lazy(() => import("@/pages/404"));
 export default [
     {
         path: "/",
-        element: <Navigate to="/home" />,
+        element: <Navigate to="/chat" />,
     },
     {
-        path: "/home", // 主页
+        path: "/login", // 主页
         element: <BlankLayout />,
         children: [
-            { index: true, element: <Home /> },
+            { index: true, element: <Login /> },
+            // { path: "/home/project", element: <MyProject /> },
+        ],
+    },
+    {
+        path: "/chat", // 聊天
+        element: <NavbarLayout />,
+        children: [
+            { index: true, element: <Chat /> },
+            // { path: "/home/project", element: <MyProject /> },
+        ],
+    },
+    {
+        path: "/note", // 笔记
+        element: <NavbarLayout />,
+        children: [
+            { index: true, element: <Note /> },
             // { path: "/home/project", element: <MyProject /> },
         ],
     },

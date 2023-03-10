@@ -24,9 +24,12 @@ module.exports = (env, argv) => {
             port: 3000,
             // 代理你的服务
             proxy: {
-                "^/cosy": "http://81.69.233.110:8080/",
-                secure: false, // 支持https
-                changeOrigin: true, // 修改host头
+                "/cosy": {
+                    target: "https://chat.cosy.plus",
+                    secure: true, // 支持https
+                    changeOrigin: true, // 修改host头
+                    //pathRewrite: { '^/cosy': '/cosy' }, // 重写路径
+                },
             },
             historyApiFallback: true, // 单页应用使用 404时调整到主页
         },
@@ -104,7 +107,7 @@ module.exports = (env, argv) => {
         },
         plugins: [
             new HtmlWebpackPlugin({
-                title: "react18-dev-template",
+                title: "CHAT AI",
                 template: "./template/index.html",
             }),
             new webpack.DefinePlugin({

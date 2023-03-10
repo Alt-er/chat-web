@@ -1,0 +1,120 @@
+.sessionWarpper {
+    height: 100%;
+    overflow: auto;
+
+    // .message nth-last-child(2) > div:nth-last-child(1) > :nth-last-child(1)::after {
+
+    // }
+}
+
+.sessionStreaming {
+    & > div:nth-last-child(2) > .message > div:last-child > :last-child::after {
+        animation: blink 1s steps(5, start) infinite;
+        content: "▋";
+        margin-left: 0.25rem;
+        vertical-align: baseline;
+    }
+}
+
+.messageWarpper {
+    width: 100%;
+}
+.message {
+    margin: 0 auto;
+    padding-top: 24px;
+    padding-bottom: 24px;
+    display: flex;
+    align-items: center;
+    column-gap: 12px;
+    // font-size: 16px;
+    color: #d1d5db;
+    font-size: 1rem;
+    line-height: 1.75;
+}
+
+@media screen and (max-width: 1024px) {
+    .message {
+        padding: 1rem;
+        // width: 90%;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .message {
+        max-width: 42rem;
+    }
+}
+
+@media screen and (min-width: 1280px) {
+    .message {
+        max-width: 48rem;
+    }
+}
+
+.userMessageWarpper {
+    white-space: pre-wrap;
+    background-color: rgba(52, 53, 65, 1);
+}
+
+.rebotMessageWarpper {
+    background-color: rgba(68, 70, 84, 1);
+}
+.outlinedWarpper {
+    font-size: 18px;
+    padding-bottom: 4px;
+    padding-top: 6px;
+    padding-left: 6px;
+    padding-right: 6px;
+    border-radius: 4px;
+    align-self: flex-start;
+    line-height: 1.15;
+}
+.userOutlinedWarpper {
+    background-color: #25a557;
+}
+.rebotOutlinedWarpper {
+    background-color: #119974;
+}
+.rebotCodeBlock {
+    position: relative;
+    & > button {
+        opacity: 0;
+        transition: opacity 0.2s ease-in-out;
+        position: absolute;
+        top: 4px;
+        right: 4px;
+        border-radius: 6px;
+        padding: 5px 8px;
+        background-color: rgb(227 174 174 / 30%);
+        color: #fff;
+        cursor: pointer;
+        user-select: none;
+        border: none;
+        font-size: 14px;
+    }
+    &:hover > button {
+        opacity: 1;
+    }
+}
+.inlineCodeBlock {
+    background: #5d5e62;
+    padding-left: 2px;
+    padding-right: 2px;
+    border-radius: 6px;
+    color: #26ff82;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    display: inline-block;
+}
+.cursor::after {
+    animation: blink 1s steps(5, start) infinite;
+    content: "▋";
+    margin-left: 0.25rem;
+    vertical-align: baseline;
+}
+
+@keyframes blink {
+    to {
+        visibility: hidden;
+    }
+}
