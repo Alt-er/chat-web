@@ -1,6 +1,6 @@
 # chat-web
 
-模板项目
+基于 chatGPT api 开发的一个在线 AI 聊天网站
 
 # 在线文档
 
