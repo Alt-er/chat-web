@@ -1,14 +1,18 @@
-import { Button, Layout, List, message, Typography } from "antd";
-import styles from "./index.less";
-import { PlusOutlined, MessageOutlined, SendOutlined, LoadingOutlined } from "@ant-design/icons";
-const { Header, Footer, Sider, Content } = Layout;
-import { Input } from "antd";
-import { useRef, useState } from "react";
-import type { TextAreaRef } from "antd/es/input/TextArea";
-import { completionApi, getChatSessionsApi } from "@/services/chat";
+import { LoadingOutlined, MessageOutlined, PlusOutlined, SendOutlined, ThunderboltOutlined } from "@ant-design/icons";
 import { useRequest } from "ahooks";
+import { Avatar, Button, Layout, List, message, Popover, Skeleton, Typography } from "antd";
+import { Input } from "antd";
+import type { TextAreaRef } from "antd/es/input/TextArea";
+import { useRef, useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+
 import { ChatSessionsAtom, CurrentChatSessionAtom, CurrentChatSessionRecordAtom, RecordCompletingAtom } from "@/recoil/chat";
+import { completionApi, getChatSessionsApi } from "@/services/chat";
+
+import { prompts } from "./ChatGPTPromptTemplate";
+import styles from "./index.less";
+
+const { Header, Footer, Sider, Content } = Layout;
 const { TextArea } = Input;
 
 export default function ChatBottom() {
@@ -76,7 +80,7 @@ export default function ChatBottom() {
                     if (index !== -1) {
                         // 匹配 \"choices\":{} 之间的文本
                         // var regex = /\"delta\":\{\"content\":\"(.+)\"\}/g;
-                        var regex = /\"delta\":\{\"content\":\"(.+)\"\}/g;
+                        var regex = /"delta":\{"content":"(.+)"\}/g;
                         // 用一个数组来存储所有匹配项
                         var matches = [];
                         var match;
@@ -150,16 +154,56 @@ export default function ChatBottom() {
     const send = () => {
         if (!recordCompleting && !loading && textAreaValue) {
             setTextAreaValue("");
-            completion(currentChatSession, textAreaValue);
+            // completion(currentChatSession, textAreaValue);
+            message.error("资金不足,暂停使用😁😁😁");
             setCurrentChatSessionRecord((record) => {
                 return [...record, { role: "user", content: textAreaValue }, { role: "assistant", content: "" }];
             });
         }
     };
+    const [open, setOpen] = useState(false);
     return (
         <div className={styles.bottom}>
             <div style={{ width: 768 }}>
                 <div className={styles.sendInput}>
+                    <Popover
+                        content={
+                            <div style={{ maxHeight: "65vh", overflow: "auto" }}>
+                                <List
+                                    // loading={initLoading}
+                                    itemLayout="horizontal"
+                                    // loadMore={loadMore}
+                                    dataSource={prompts}
+                                    renderItem={(item) => (
+                                        <div
+                                            onClick={() => {
+                                                setTextAreaValue(item.value);
+                                                setOpen(false);
+                                            }}
+                                            style={{ cursor: "pointer" }}
+                                            className={styles.promptItem}
+                                        >
+                                            <List.Item>
+                                                <div>{item.key}</div>
+                                            </List.Item>
+                                        </div>
+                                    )}
+                                />
+                            </div>
+                        }
+                        title="提示"
+                        trigger="click"
+                        open={open}
+                        onOpenChange={(newOpen: boolean) => {
+                            setOpen(newOpen);
+                        }}
+                    >
+                        <div className={styles.prompts}>
+                            <ThunderboltOutlined />
+                            <span>提示</span>
+                        </div>
+                    </Popover>
+
                     <TextArea
                         className={styles.textArea}
                         autoSize={{ minRows: 1, maxRows: 8 }}
@@ -175,6 +219,7 @@ export default function ChatBottom() {
                             }
                         }}
                     ></TextArea>
+
                     {loading || recordCompleting ? <LoadingOutlined className={styles.loadingOutlined} /> : <SendOutlined className={styles.sendOutlined} onClick={send} />}
                 </div>
                 <div className={styles.tips}>ChatGPT model : gpt-3.5-turbo , Update time : 2023/03</div>

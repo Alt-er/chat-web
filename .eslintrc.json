@@ -8,13 +8,9 @@
 
         允许 extends 配置多个模块，如果规则冲突，位置靠后的包将覆盖前面的。rules 中的规则相同，并且优先级恒定高于 extends，类似class的extends，支持多继承。
     */
-    "extends": ["react-app", "airbnb", "prettier"],
+    "extends": ["react-app", "airbnb-typescript", "prettier"],
     "parserOptions": {
-        "ecmaFeatures": {
-            "jsx": true
-        },
-        "ecmaVersion": 12,
-        "sourceType": "module"
+        "project": "./tsconfig.json"
     },
     /*
         引入 plugin 可以理解为只是加载了插件，引入了额外的 自定义的rules。需要在 rules、extends 中定义后才会生效，如果没有则不生效。
@@ -25,7 +21,7 @@
     "settings": {
         "import/resolver": {
             "node": {
-                "extensions": [".js", ".jsx"],
+                "extensions": [".js", ".jsx", ".ts", ".tsx"],
                 "moduleDirectory": ["node_modules", "src/"]
             },
             // "alias": {
@@ -41,7 +37,7 @@
         "react/jsx-filename-extension": [
             "warn",
             {
-                "extensions": [".js", ".jsx"]
+                "extensions": [".js", ".jsx", ".ts", ".tsx"]
             }
         ],
         "no-param-reassign": "off",
